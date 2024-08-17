@@ -15,7 +15,7 @@ import {
 
 export const RecordList: FC<{
   records: Record[]
-  getRecords: React.Dispatch<React.SetStateAction<Record[]>>
+  getRecords: () => void
 }> = (props) => {
   const { records, getRecords } = props
 
