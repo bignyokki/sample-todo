@@ -14,6 +14,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Box,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
@@ -109,12 +110,18 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant='outline' onClick={modalClose}>
-              キャンセル
-            </Button>
-            <Button colorScheme='teal' mr={3} onClick={handleSubmit(onSubmit)}>
-              登録
-            </Button>
+            <Box width='100%' display='flex' justifyContent='space-between'>
+              <Button variant='outline' onClick={modalClose}>
+                キャンセル
+              </Button>
+              <Button
+                colorScheme='teal'
+                mr={3}
+                onClick={handleSubmit(onSubmit)}
+              >
+                登録
+              </Button>
+            </Box>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -27,9 +27,17 @@ function App() {
   return (
     <>
       <Box display='flex' justifyContent='center'>
-        <Stack align='center'>
+        <Stack
+          align='center'
+          spacing={4}
+          width='100%'
+          maxWidth='600px'
+          mx='auto'
+        >
           <Heading data-testid='title'>学習記録一覧v2</Heading>
-          <CreateButtonWithModal getRecords={() => getRecords()} />
+          <Box width='100%' textAlign='right'>
+            <CreateButtonWithModal getRecords={() => getRecords()} />
+          </Box>
           <RecordList records={records} getRecords={() => getRecords()} />
         </Stack>
       </Box>

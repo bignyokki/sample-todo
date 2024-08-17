@@ -35,8 +35,8 @@ export const RecordList: FC<{
   }
 
   return (
-    <TableContainer>
-      <Table variant='simple' maxWidth='600px'>
+    <TableContainer width='100%'>
+      <Table variant='simple'>
         <TableCaption>合計時間：{`${sumTime}/${targetTime}(h)`}</TableCaption>
         <Thead>
           <Tr>
