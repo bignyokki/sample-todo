@@ -24,7 +24,9 @@ export const postRecord = async (postRecord: PostRecordProps) => {
   }
 }
 
-// export const deleteRecord = async (id: number) => {
-//   const response = await supabase.from('study-record-2').delete().eq('id', id)
-//   return response
-// }
+export const deleteRecord = async (id: number) => {
+  const { error } = await supabase.from('study-record-2').delete().eq('id', id)
+  if (error) {
+    throw new Error('データベースから削除できませんでした')
+  }
+}

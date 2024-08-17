@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-// import { deleteRecord } from "../utils/recordFunction"
+import { deleteRecord } from '../utils/recordFunction'
 import type { Record } from '../domains/record'
 import type { FC } from 'react'
 import {
@@ -12,13 +12,13 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { MdDelete } from 'react-icons/md'
 
 export const RecordList: FC<{
   records: Record[]
   getRecords: () => void
 }> = (props) => {
   const { records, getRecords } = props
-
   const targetTime = 1000 // 目標時間
   const [sumTime, setSumTime] = useState(0)
 
@@ -29,14 +29,10 @@ export const RecordList: FC<{
     setSumTime(_sumTime)
   }, [records])
 
-  // const onClickDelete = async (id) => {
-  //   const response = await deleteRecord(id)
-  //   if (response.error) {
-  //     window.alert("データの削除に失敗しました。")
-  //     return
-  //   }
-  //   getRecords()
-  // }
+  const onClickDelete = async (id: number) => {
+    await deleteRecord(id)
+    getRecords()
+  }
 
   return (
     <TableContainer>
@@ -56,8 +52,11 @@ export const RecordList: FC<{
                 <Td>{record.title}</Td>
                 <Td>{record.time}時間</Td>
                 <Td>
-                  削除
-                  {/* <button onClick={() => onClickDelete(record.id)} data-testid={"delete-" + record.id}>削除</button> */}
+                  <MdDelete
+                    onClick={() => onClickDelete(record.id)}
+                    data-testid={'delete-' + record.id}
+                    style={{ cursor: 'pointer' }}
+                  />
                 </Td>
               </Tr>
             )
