@@ -16,8 +16,11 @@ function App() {
   }
 
   useEffect(() => {
-    getRecords()
-    setIsLoading(false)
+    const asyncFunction = async () => {
+      await getRecords()
+      setIsLoading(false)
+    }
+    asyncFunction()
   }, [])
 
   if (isLoading) {

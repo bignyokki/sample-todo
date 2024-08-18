@@ -53,7 +53,7 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme='teal'>
+      <Button onClick={onOpen} colorScheme='teal' data-testid='create-button'>
         新規登録
       </Button>
 
