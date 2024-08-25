@@ -69,7 +69,9 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
                 name='title'
                 control={control}
                 rules={{ required: '内容の入力は必須です' }}
-                render={({ field }) => <Input {...field} />}
+                render={({ field }) => (
+                  <Input {...field} data-testid='title-input-field' />
+                )}
               />
               {errors.title && (
                 <Text color='red.500'>{errors.title.message}</Text>
@@ -94,6 +96,7 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
                       }
                     }}
                     min={0}
+                    data-testid='time-input-field'
                   >
                     <NumberInputField />
                     <NumberInputStepper>
@@ -118,6 +121,7 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
                 colorScheme='teal'
                 mr={3}
                 onClick={handleSubmit(onSubmit)}
+                data-testid='submit-button'
               >
                 登録
               </Button>
