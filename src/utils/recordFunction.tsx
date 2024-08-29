@@ -30,3 +30,13 @@ export const deleteRecord = async (id: number) => {
     throw new Error('データベースから削除できませんでした')
   }
 }
+
+export const editRecord = async (id: number, data: PostRecordProps) => {
+  const { error } = await supabase
+    .from('study-record-2')
+    .update(data)
+    .eq('id', id)
+  if (error) {
+    throw new Error('データを更新できませんでした')
+  }
+}

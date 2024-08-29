@@ -1,14 +1,15 @@
-import { Box, Heading, Stack } from '@chakra-ui/react'
+import { Box, Button, Heading, Stack, useDisclosure } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { getAllRecords } from './utils/recordFunction'
 import { Record } from './domains/record'
 import { RecordList } from './components/RecordList'
 import { LoadingComponent } from './components/LoadingComponent'
-import { CreateButtonWithModal } from './components/CreateButtonWithModal'
+import { CreateAndEditModal } from './components/CreateAndEditModal'
 
 function App() {
   const [records, setRecord] = useState<Record[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const disclosure = useDisclosure()
 
   const getRecords = async () => {
     const _records = await getAllRecords()
@@ -39,7 +40,17 @@ function App() {
         >
           <Heading data-testid='title'>学習記録一覧v2</Heading>
           <Box width='100%' textAlign='right'>
-            <CreateButtonWithModal getRecords={() => getRecords()} />
+            <Button
+              onClick={disclosure.onOpen}
+              colorScheme='teal'
+              data-testid='create-button'
+            >
+              新規登録
+            </Button>
+            <CreateAndEditModal
+              disclosure={disclosure}
+              getRecords={() => getRecords()}
+            />
           </Box>
           <RecordList records={records} getRecords={() => getRecords()} />
         </Stack>
