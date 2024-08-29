@@ -15,33 +15,54 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Box,
+  UseDisclosureReturn,
 } from '@chakra-ui/react'
-import { useDisclosure } from '@chakra-ui/react'
 import { useForm, Controller } from 'react-hook-form'
-import { postRecord } from '../utils/recordFunction'
+import { postRecord, editRecord } from '../utils/recordFunction'
+import type { Record } from '../domains/record'
+import { useEffect } from 'react'
 
 type FormData = {
   title: string
   time: number
 }
 
-export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
-  const { getRecords } = props
-  const { isOpen, onOpen, onClose } = useDisclosure()
+type Props = {
+  getRecords: () => void
+  disclosure: UseDisclosureReturn
+  formParams?: Record
+}
+
+export const CreateAndEditModal = (props: Props) => {
+  const { getRecords, disclosure, formParams } = props
+  const { isOpen, onClose } = disclosure
+
   const {
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      title: '',
-      time: 0,
+      title: formParams?.title || '',
+      time: formParams?.time || 0,
     },
   })
 
-  const onSubmit = (data: FormData) => {
-    postRecord(data)
+  useEffect(() => {
+    if (formParams) {
+      setValue('title', formParams.title)
+      setValue('time', formParams.time)
+    }
+  }, [formParams, setValue])
+
+  const onSubmit = async (data: FormData) => {
+    if (formParams === undefined) {
+      await postRecord(data)
+    } else {
+      await editRecord(formParams.id, data)
+    }
     getRecords()
     modalClose()
   }
@@ -53,14 +74,12 @@ export const CreateButtonWithModal = (props: { getRecords: () => void }) => {
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme='teal' data-testid='create-button'>
-        新規登録
-      </Button>
-
       <Modal isOpen={isOpen} onClose={modalClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>新規登録フォーム</ModalHeader>
+          <ModalHeader>
+            {formParams === undefined ? '新規登録フォーム' : '編集フォーム'}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
