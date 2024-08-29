@@ -11,6 +11,7 @@ jest.spyOn(recordFunction, 'getAllRecords').mockResolvedValue([
 ])
 jest.spyOn(recordFunction, 'postRecord').mockImplementation(jest.fn())
 jest.spyOn(recordFunction, 'deleteRecord').mockImplementation(jest.fn())
+jest.spyOn(recordFunction, 'editRecord').mockImplementation(jest.fn())
 
 describe('App', () => {
   beforeEach(() => {
@@ -97,6 +98,40 @@ describe('App', () => {
     fireEvent.click(screen.getByTestId('delete-1'))
     await waitFor(() => {
       expect(mockDeleteRecord).toHaveBeenCalled()
+      expect(mockGetRecords).toHaveBeenCalled()
+    })
+  })
+
+  it('編集ボタンを押すとモーダルが表示され、モーダルのタイトルが表示されていること', async () => {
+    await act(async () => {
+      render(<App />)
+    })
+    fireEvent.click(screen.getByTestId('edit-1'))
+    expect(screen.getByText('編集フォーム')).toBeInTheDocument()
+  })
+
+  it('学習記録の編集ができること', async () => {
+    const mockEditRecord = recordFunction.editRecord
+    const mockGetRecords = recordFunction.getAllRecords
+    await act(async () => {
+      render(<App />)
+    })
+    fireEvent.click(screen.getByTestId('edit-1'))
+    fireEvent.change(screen.getByTestId('title-input-field'), {
+      target: { value: '編集テスト' },
+    })
+    fireEvent.input(
+      screen.getByTestId('time-input-field').querySelector('input')!,
+      {
+        target: { value: '2' },
+      }
+    )
+    fireEvent.click(screen.getByTestId('submit-button'))
+    await waitFor(() => {
+      expect(mockEditRecord).toHaveBeenCalledWith(1, {
+        title: '編集テスト',
+        time: 2,
+      })
       expect(mockGetRecords).toHaveBeenCalled()
     })
   })
